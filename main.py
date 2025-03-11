@@ -2,7 +2,7 @@
 # List of player options. Order irrelevant.
 countryList = ["a", "b", "c", "d", "e", "f", "g"]
 
-# List of player's preferences. Player order and preference order relevant. 
+# List of player's preferences. Preference order relevant. 
 player0 = ["a", "b", "c"]
 player1 = ["c", "b", "f"]
 player2 = ["d", "g", "b"]
@@ -11,6 +11,7 @@ player4 = ["a", "f", "e"]
 player5 = ["a", "d", "c"]
 player6 = ["b", "f", "c"]
 
+# Order of players here will match outputted player order
 prefList = [player0, player1, player2, player3, player4, player5, player6]
 
 def permutations(elements): # Iterate through all permutations of given set
@@ -23,10 +24,11 @@ def permutations(elements): # Iterate through all permutations of given set
 
 def satisfaction(preferences, assignment): # Compare assigned list to preference data
     sat = 0 # Satisfaction score
-    i = 0
     for country in assignment: # Iterate through country assignments
         if(country in preferences[assignment.index(country)]): # If assignment for a given player is present in that player's preferences list
             sat+=(len(preferences[assignment.index(country)])-preferences[assignment.index(country)].index(country)) # Add inverse of preference index to satisfaction score
+        else:
+            sat-=1 # Subtract 1 if, for a given plauer, zero preferences are honored
     return int(sat)
 
 sat = 0
@@ -47,6 +49,6 @@ for assignment in list(permutations(countryList)):
     iterations+=1
 
 
-print(f"Checked {iterations} permutations. Found the following {len(solutions)} possibilities with satisfaction score {sat}/21:")
+print(f"Checked {iterations} permutations. Found the following {len(solutions)} possibilities with satisfaction score {round(sat/(len(prefList)*len(player0)), 2)}:")
 print(*solutions, sep="\n")
 
